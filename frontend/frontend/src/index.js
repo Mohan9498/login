@@ -11,16 +11,18 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
 
 const token = localStorage.getItem("token");
 
-fetch("http://127.0.0.1:8000/protected/", {
+fetch("http://127.0.0.1:8000/api/token/", {
+  method: "POST",
   headers: {
-    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json"
   },
-});
+  body: JSON.stringify({
+    username: "your_actual_username",
+    password: "your_actual_password"
+  })
+})
