@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
+.env
 venv/
 *.egg-info/
 dist/
@@ -24,3 +24,4 @@ db.sqlite3-journal
 # OS
 .DS_Store
 Thumbs.db
+.env
