@@ -2,8 +2,11 @@ from django.contrib import admin
 from django.urls import path, include
 from api.views import register, login_view, protected
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from django.http import HttpResponse
 
 urlpatterns = [
+    path('', lambda request: HttpResponse("Backend is running ")),
+
     path('admin/', admin.site.urls),
 
     path('register/', register, name='register'),
@@ -16,3 +19,4 @@ urlpatterns = [
 
     path('protected/', protected),
 ]
+

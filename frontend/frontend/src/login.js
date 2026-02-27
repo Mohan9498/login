@@ -45,7 +45,7 @@ function Login({ onLoginSuccess, onSwitchToRegister }) {
       // Store tokens
       localStorage.setItem("access", response.data.access);
       localStorage.setItem("refresh", response.data.refresh);
-      localStorage.setItem("username", response.data.username);
+      localStorage.setItem("username", username.trim());
 
       // Call parent component's login success handler
       if (onLoginSuccess) {
@@ -75,6 +75,7 @@ function Login({ onLoginSuccess, onSwitchToRegister }) {
     } finally {
       setLoading(false);
     }
+
   };
 
   return (

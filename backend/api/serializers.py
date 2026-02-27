@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from rest_framework import serializers
+from django.http import JsonResponse
+import json
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -27,6 +29,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
         return user
 
+   
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -46,3 +49,19 @@ class LoginSerializer(serializers.Serializer):
 
         data['user'] = user
         return data
+    
+    def login_view(request):
+        if request.method == "POST":
+            data = json.loads(request.body)
+            username = data.get("username")
+            password = data.get("password")
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            return JsonResponse({
+                "success": True,
+                "username": user.username
+            })
+        else:
+            return JsonResponse({"success": False})
