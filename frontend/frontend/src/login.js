@@ -5,6 +5,7 @@ import "./login.css";
 function Login({ onLoginSuccess, onSwitchToRegister }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("student");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -46,10 +47,11 @@ function Login({ onLoginSuccess, onSwitchToRegister }) {
       localStorage.setItem("access", response.data.access);
       localStorage.setItem("refresh", response.data.refresh);
       localStorage.setItem("username", username.trim());
+      localStorage.setItem("role", role);
 
-      // Call parent component's login success handler
+      // Call parent component's login success handler with role
       if (onLoginSuccess) {
-        onLoginSuccess(response.data);
+        onLoginSuccess(response.data, role);
       }
 
     } catch (error) {
@@ -102,6 +104,12 @@ function Login({ onLoginSuccess, onSwitchToRegister }) {
           className={errors.password ? "input-error" : ""}
         />
         {errors.password && <span className="error-text">{errors.password}</span>}
+        <br /><br />
+
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+        </select>
         <br /><br />
 
         <button type="submit" disabled={loading}>
