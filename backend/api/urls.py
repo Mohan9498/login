@@ -1,6 +1,7 @@
 from django.urls import path
-from . import views
+from .views import get_user_role
 
-urlpatterns = [
-    path('test/', views.test_view),
+urlpatterns = []
+urlpatterns += [
+    path('user/', get_user_role),
 ]

@@ -5,7 +5,6 @@ import "./login.css";
 function Login({ onLoginSuccess, onSwitchToRegister }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("student");
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -47,11 +46,25 @@ function Login({ onLoginSuccess, onSwitchToRegister }) {
       localStorage.setItem("access", response.data.access);
       localStorage.setItem("refresh", response.data.refresh);
       localStorage.setItem("username", username.trim());
-      localStorage.setItem("role", role);
+
+      // Get user role from backend
+      const userResponse = await axios.get(
+        "http://127.0.0.1:8000/api/user/",
+        {
+          headers: {
+            Authorization: `Bearer ${response.data.access}`,
+          },
+        }
+      );
+
+      // Determine role based on is_staff (human coded: "admin" for staff, "student" for non-staff)
+      const backendRole = userResponse.data.is_staff ? "admin" : "student";
+
+      localStorage.setItem("role", backendRole);
 
       // Call parent component's login success handler with role
       if (onLoginSuccess) {
-        onLoginSuccess(response.data, role);
+        onLoginSuccess(response.data, backendRole);
       }
 
     } catch (error) {
@@ -104,12 +117,6 @@ function Login({ onLoginSuccess, onSwitchToRegister }) {
           className={errors.password ? "input-error" : ""}
         />
         {errors.password && <span className="error-text">{errors.password}</span>}
-        <br /><br />
-
-        <select value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="student">Student</option>
-          <option value="admin">Admin</option>
-        </select>
         <br /><br />
 
         <button type="submit" disabled={loading}>
